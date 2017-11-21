@@ -5,9 +5,9 @@ Source code will be available soon.
 
 
 ### Bib
-*Paper*: https://arxiv.org/abs/1711.06794
+**Paper**: https://arxiv.org/abs/1711.06794
 
-*Bib*:
+**Bib**:
 ```
 @inproceedings{lu2018co-attending,
 	title={Co-attending Free-form Regions and Detections with Multi-modal Multiplicative Feature Embedding for Visual Question Answering.},
