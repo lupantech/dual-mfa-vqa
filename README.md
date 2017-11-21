@@ -6,6 +6,7 @@ Source code will be available soon.
 
 ### Bib
 *Paper*: https://arxiv.org/abs/1711.06794
+
 *Bib*:
 ```
 @inproceedings{lu2018co-attending,
