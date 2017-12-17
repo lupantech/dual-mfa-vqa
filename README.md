@@ -3,6 +3,8 @@ Co-attending Regions and Detections with Multi-modal Multiplicative Embedding fo
 
 Source code will be available soon.
 
+Update:
+- Source code will be available before Dec. 20.
 
 ### Bib
 **Paper**: https://arxiv.org/abs/1711.06794
