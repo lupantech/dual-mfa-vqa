@@ -6,14 +6,15 @@ Co-attending Regions and Detections with Multi-modal Multiplicative Embedding fo
 
 This current code can get **66.09** on Open-Ended and 69.97 on Multiple-Choice on test-standard split for the VQA 1.0 dataset.
 
-![ model overview](model.png)
+
+![ | center](https://github.com/lupantech/dual-mfa-vqa/blob/master/model.png?raw=true)
 
 ### Dependencies
 
 This main part of code is written in Lua and requires [Torch](http://torch.ch/docs/getting-started.html#). After installing torch, you can install these dependencies by running the following:
 
 ##### Installing related torch libraries
-``` bash
+``` 
 cd ~/torch
 luarocks install loadcaffe
 luarocks install hdf5
@@ -35,7 +36,7 @@ luarocks make rocks/rnn-scm-1.rockspec
 
 
 ##### Installing Cjson
-```bash
+```
 cd /usr/local/
 sudo wget https://www.kyne.com.au/~mark/software/download/lua-cjson-2.1.0.tar.gz
 sudo tar -xzvf  lua-cjson-2.1.0.tar.gz
@@ -47,7 +48,7 @@ sudo rm ../lua-cjson-2.1.0.tar.gz
 
 ##### Installing NLTK
 
-``` bash
+``` 
 cd /usr/share/
 sudo mkdir nltk_data
 sudo pip install -U nltk
@@ -57,14 +58,14 @@ python -m nltk.downloader all
 ##### Installing GPU acceleration
 - If have an NVIDIA GPU and want to accelerate the model with CUDA, you'll also need to install [torch/cutorch](https://github.com/torch/cutorch) and [torch/cunn](https://github.com/torch/cunn); you can install these by running:
 
-``` bash
+``` 
 luarocks install cutorch
 luarocks install cunn
 luarocks install cudnn
 ```
 ##### Installing cuDNN (Optional)
 - If you want to use NVIDIA's cuDNN library, you'll need to register for the CUDA Developer Program (it's free) and download the library from [NVIDIA's website](https://developer.nvidia.com/cudnn). An running script **just for an example**:
-``` bash
+``` 
 cd ~/torch
 # download the right cudnn file to cuda version
 tar -xzvf  cudnn-7.5-linux-x64-v5.1.tgz
@@ -72,13 +73,13 @@ sudo cp cuda/lib64/libcudnn* /usr/local/cuda-7.5/lib64/
 sudo cp cuda/include/cudnn.h /usr/local/cuda-7.5/include/
 ```
 - You'll also need to install the [cuDNN bindings for Torch](https://github.com/soumith/cudnn.torch) by running 
-``` bash
+``` 
 luarocks install cudnn
 ```
 
 ##### Installing nccl for Multi-GPU Optimization (Optional)
 - Optimized primitives for collective multi-GPU communication. Note that [NVIDIA/nccl](https://github.com/NVIDIA/nccl) is an optimization tool, and you can run the codes on multi-GPUs without nccl.
-``` bash
+``` 
 cd torch/
 git clone https://github.com/NVIDIA/nccl.git
 # build the library
@@ -86,7 +87,7 @@ cd nccl/
 make CUDA_HOME=/usr/local/cuda-7.5 test
 # update LIBRARY_PATH
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/plu/torch/nccl/build/lib
-source ~/.bashrc
+source ~/.rc
 # test demo
 $ ./build/test/single/all_reduce_test
 $ ./build/test/single/all_reduce_test 10000000
@@ -98,15 +99,15 @@ luarocks install nccl
 Extracting and visualizing bounding boxes are supported by [caffe](http://caffe.berkeleyvision.org/installation.html) and [py-faster-rcnn](https://github.com/rbgirshick/py-faster-rcnn). You can install Caffe and faster-rcnn following the [instructions](faster-rcnn-vqa/README.md).
 
 Then copy the faster-rcnn for vqa files to the target folder:
-``` bash
-cp ~/vqa/faster-rcnn-vqa/tools/*.py  ~/py-faster-rcnn/tools/
+``` 
+cp ~/dual-mfa-vqa/faster-rcnn-vqa/tools/*.py  ~/py-faster-rcnn/tools/
 ```
 
 
 ### VQA Dataset
 
 #### Download mscoco images
-``` bash
+``` 
 mkdir -p ~/VQA/Images/mscoco
 cd ~/VQA/Images/mscoco
 wget http://msvocds.blob.core.windows.net/coco2014/train2014.zip
@@ -121,20 +122,20 @@ ln -s test2015 test-dev2015
 ```
 
 #### Download VQA question and answers
-``` bash
-cd ~/vqa/data_train-val_test-dev_2k
+``` 
+cd ~/dual-mfa-vqa/data_train-val_test-dev_2k
 python vqa_preprocess.py --download 1
 python prepro_vqa.py
-cd ~/vqa/data_train_test-dev_2k
+cd ~/dual-mfa-vqa/data_train_test-dev_2k
 python vqa_preprocess.py
 python prepro_vqa.py
-cd ~/vqa
+cd ~/dual-mfa-vqa
 th prepro/prepro_seconds.lua
 ```
 
 
 #### Download Resnet image model
-``` bash
+``` 
 mkdir -p ~/VQA/Images/Image_model
 cd ~/VQA/Image_model
 wget https://d2j0dndfm35trm.cloudfront.net/resnet-152.t7
@@ -142,7 +143,7 @@ wget https://raw.githubusercontent.com/facebook/fb.resnet.torch/master/datasets/
 ```
 
 #### Download faster-rcnn model
-``` bash
+``` 
 cd ~/py-faster-rcnn/data/
 mkdir faster_rcnn_models
 cd faster_rcnn_models
@@ -163,6 +164,7 @@ This current code can get **66.01** on Open-Ended and 70.04 on Multiple-Choice o
 #### Free-form region based features
 - image features for train dataset
 ``` 
+cd prepro
 th prepro_res_train.lua -batch_size 8
 ```
 - image features for test-dev dataset
@@ -224,8 +226,8 @@ th train.lua -phase 2 -nGPU 4 -memory_ms -load_checkpoint_path model/save/vqa_mo
 
 ### Evaluation 
 Evaluate the pre-trained model on VQA dataset
-``` bash
-cd ~/vqa
+``` 
+cd ~/dual-mfa-vqa
 th eval.lua -model_path model/vqa_model_dual-mfa_6601.t7 -output_model_name vqa_model_dual-mfa_6601 -batch_size 10
 ```
 Then you can submit the result jsons and obtain the evaluation scores
@@ -245,13 +247,13 @@ python prepro_cocoqa.py
 ```
 
 - Extract the free-form image features
-``` bash
-cd ~/vqa/prepro
+``` 
+cd prepro
 th prepro_res_coco.lua -batch_size 8
 ```
 
 - Training and testing the network
-``` bash
+``` 
 th train.lua -vqa_type coco-qa -learning_rate 4e-4 -nGPU 4 -batch_size 100 -cg_every 2 \
 -model_id 1 -model_label dual-mfa
 ```
@@ -271,7 +273,7 @@ python vis_prepro.py
 - run the matlab file `vis_attention_demo.m` to show the results of attention maps
 - run the matlab file `vis_attention.m` to save the results of attention maps
 
-![ attention map](attention_map.png)
+![ | center ](https://github.com/lupantech/dual-mfa-vqa/blob/master/attention_map.png?raw=true)
 
 ### Reference
 - **Paper on arXiv**: https://arxiv.org/abs/1711.06794
