@@ -4,7 +4,7 @@
 --  https://arxiv.org/abs/1610.04325
 ------------------------------------------------------------------------------
 
-require 'myutils'
+require 'misc.myutils'
 
 trainset={'train','val'}
 a={}
