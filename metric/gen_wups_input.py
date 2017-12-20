@@ -10,10 +10,8 @@ import json
 import re
 import math
 
-
-predict_file = json.load(open('/home/plu/Dual-VQA/result/OpenEnded_mscoco_test-dev2015_MLT1g_MLT2g_ADD2_ATT7b_coco_id2_0904b_iter21100_results.json', 'r'))
+predict_file = json.load(open('../result/OpenEnded_mscoco_test-dev2015_MLT1g_MLT2g_ADD2_ATT7b_coco_id2_0904b_iter21100_results.json', 'r'))
 gt_file = json.load(open('../data_coco/cocoqa_raw_test.json', 'r'))
-
 
 # calculate the accuracy for each type:
 acc = 0
