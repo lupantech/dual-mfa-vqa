@@ -124,6 +124,7 @@ ln -s test2015 test-dev2015
 
 #### Download VQA question and answers
 ``` 
+mkdir -p ~/VQA/Annotations
 cd ~/dual-mfa-vqa/data_train-val_test-dev_2k
 python vqa_preprocess.py --download 1
 python prepro_vqa.py
