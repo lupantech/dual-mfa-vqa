@@ -1,8 +1,12 @@
 ## Dual-MFA-VQA
 
 
-
 Co-attending Regions and Detections with Multi-modal Multiplicative Embedding for VQA. 
+
+The network has two attention branches with the proposed multiplicative feature embedding scheme: one branch attends free-form image regions, another branch attends detection boxes for encoding question-related visual features.
+
+![Alt text](./1513784733100.png)
+
 
 This current code can get **66.09** on Open-Ended and 69.97 on Multiple-Choice on test-standard split for the VQA 1.0 dataset.
 - **Paper on arXiv**: https://arxiv.org/abs/1711.06794
