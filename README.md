@@ -87,7 +87,7 @@ cd nccl/
 make CUDA_HOME=/usr/local/cuda-7.5 test
 # update LIBRARY_PATH
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/plu/torch/nccl/build/lib
-source ~/.rc
+source ~/.bashrc
 # test demo
 $ ./build/test/single/all_reduce_test
 $ ./build/test/single/all_reduce_test 10000000
@@ -207,21 +207,21 @@ th train.lua -phase 2 -nGPU 4 -memory_ms -load_checkpoint_path model/save/vqa_mo
 ```
 
 - Main options useful training are listed as follows
- - `phase`：training phase, `1`: train on Train, `2`: train on Train+Val
- - `vqa_type`: vqa dataset type, `vqa` or `coco-qa`
- - `memory_ms`: load image resnet feature to memory
- - `memory_frms`: load image fast-rcnn feature to memory
- - `val`: running validation
- - `val_nqs`: number of validation questions, `-1` for all questions
- - `batch_size`: batch_size for each iterations, change it to smaller value if out of the memory
- - `run_id`: running model id
- - `model_label`: model label name
- - `save_checkpoint_every`:  how often to save a model checkpoint
- - `skip_save_model`: skip saving t7 model
- - `cg_every`: How often do we collectgarbage in the training process, change it to smaller value if out of the memory
- - `quick_check`: quick check for code
- - `quickquick_check`: very quick check for code
- - `nGPU`: how many GPUs to use, 1 = use 1 GPU, change it to larger value if out of the memory
+	- `phase`：training phase, `1`: train on Train, `2`: train on Train+Val
+	 - `vqa_type`: vqa dataset type, `vqa` or `coco-qa`
+	- `memory_ms`: load image resnet feature to memory
+	 - `memory_frms`: load image fast-rcnn feature to memory
+	 - `val`: running validation
+	 - `val_nqs`: number of validation questions, `-1` for all questions
+	 - `batch_size`: batch_size for each iterations, change it to smaller value if out of the memory
+	 - `run_id`: running model id
+	 - `model_label`: model label name
+	 - `save_checkpoint_every`:  how often to save a model checkpoint
+	 - `skip_save_model`: skip saving t7 model
+	 - `cg_every`: How often do we collectgarbage in the training process, change it to smaller value if out of the memory
+	 - `quick_check`: quick check for code
+	 - `quickquick_check`: very quick check for code
+	 - `nGPU`: how many GPUs to use, 1 = use 1 GPU, change it to larger value if out of the memory
 
 
 ### Evaluation 
@@ -262,7 +262,7 @@ th train.lua -vqa_type coco-qa -learning_rate 4e-4 -nGPU 4 -batch_size 100 -cg_e
 ### Visualization
 - Generate attention map
 ``` 
-cd ~/vqa
+cd ~/dual-mfa-vqa
 th eval_vis_att.lua -model_path model/vqa_model_dual-mfa_6601.t7 -output_model_name vqa_model_dual-mfa_6601 -batch_size 8
 ```
 - visualize attention map
