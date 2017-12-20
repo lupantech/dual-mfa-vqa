@@ -1,0 +1,11 @@
+*.t7
+*.json
+*.h5
+
+*/coco_qa/
+*/zip/
+model/
+result/
+py-faster-rcnn/
+vqa_demo/
+
