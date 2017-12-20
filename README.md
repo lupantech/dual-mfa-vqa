@@ -5,7 +5,7 @@
 Co-attending Regions and Detections with Multi-modal Multiplicative Embedding for VQA. 
 
 This current code can get **66.09** on Open-Ended and 69.97 on Multiple-Choice on test-standard split for the VQA 1.0 dataset.
-
+- **Paper on arXiv**: https://arxiv.org/abs/1711.06794
 
 ![ | center](https://github.com/lupantech/dual-mfa-vqa/blob/master/model.png?raw=true)
 
@@ -72,7 +72,7 @@ tar -xzvf  cudnn-7.5-linux-x64-v5.1.tgz
 sudo cp cuda/lib64/libcudnn* /usr/local/cuda-7.5/lib64/
 sudo cp cuda/include/cudnn.h /usr/local/cuda-7.5/include/
 ```
-- You'll also need to install the [cuDNN bindings for Torch](https://github.com/soumith/cudnn.torch) by running 
+- You'll also need to install the [cuDNN bindings for Torch](https://github.com/soumith/cudnn.torch) by running:
 ``` 
 luarocks install cudnn
 ```
@@ -134,7 +134,7 @@ th prepro/prepro_seconds.lua
 ```
 
 
-#### Download Resnet image model
+#### Download resnet image model
 ``` 
 mkdir -p ~/VQA/Images/Image_model
 cd ~/VQA/Image_model
@@ -151,8 +151,8 @@ wget https://dl.dropboxusercontent.com/s/cotx0y81zvbbhnt/coco_vgg16_faster_rcnn_
 mv coco_vgg16_faster_rcnn_final.caffemodel?dl=0  coco_vgg16_faster_rcnn_final.caffemodel
 ```
 
-#### Download Skipthoughts models
-You can download the pretrained Skipthoughts models to folder `skipthoughts_model` for learning ([See more details](https://github.com/jnhwkim/MulLowBiVQA/tree/master/skipthoughts_model)):
+#### Download skipthoughts models
+You can download the pretrained Skipthoughts models to folder `skipthoughts_model/` for learning ([See more details](https://github.com/jnhwkim/MulLowBiVQA/tree/master/skipthoughts_model)):
 - [gru.t7 (332M)](https://drive.google.com/uc?export=download&confirm=fFRb&id=0B-75nmZV6j-JZng3VEtmeDdxVXM)
 - [lookup_2k.t7 (142M)](https://drive.google.com/uc?export=download&confirm=liRP&id=0B-75nmZV6j-JRmhIMnctVXpGMEU)
 
@@ -162,26 +162,26 @@ This current code can get **66.01** on Open-Ended and 70.04 on Multiple-Choice o
 
 ### Extracting Image Features
 #### Free-form region based features
-- image features for train dataset
+- Image features for train dataset
 ``` 
 cd prepro
 th prepro_res_train.lua -batch_size 8
 ```
-- image features for test-dev dataset
+- Image features for test-dev dataset
 ``` 
 th prepro_res_test.lua -batch_size 8
 ```
 
 #### Detection region based features
-- image features for train dataset
+- Image features for train dataset
 ``` 
 python extract_box_feat_train.py
 ```
-- image features for test dataset
+- Image features for test dataset
 ``` 
 python extract_box_feat_train.py
 ```
-- bounding box coordinates for test dataset
+- Bounding box coordinates for test dataset
 ``` 
 python extract_box_test.py
 ```
@@ -193,23 +193,23 @@ Now, everything is ready, let's train the vqa network. Here are some common trai
 ```
 th train.lua -phase 1 -val_nqs -1 -nGPU 4
 ```
-- training the network on train-val dataset
+- Training the network on train-val dataset
 ```
-th train.lua -phase 2 -nGPU 4
+th train.lua -phase 2 -nGPU 4 -batchsize 300
 ```
-- training the network loading image features from memory (much faster, 200-300G memory is needed)
+- Training the network loading image features from memory (much faster, 200-300G memory is needed)
 ```
 th train.lua -phase 1 -val_nqs 10000 -nGPU 4 -memory_ms -memory_frms
 ```
-- training the network from the previous checkpoint
+- Training the network from the previous checkpoint
 ```
 th train.lua -phase 2 -nGPU 4 -memory_ms -load_checkpoint_path model/save/vqa_model_dual-mfa_6601.t7 -previous_iters 350000
 ```
 
-- Main options useful training are listed as follows
-	- `phase`：training phase, `1`: train on Train, `2`: train on Train+Val
+- Main options useful training are listed as follows:
+	 - `phase`：training phase, `1`: train on Train, `2`: train on Train+Val
 	 - `vqa_type`: vqa dataset type, `vqa` or `coco-qa`
-	- `memory_ms`: load image resnet feature to memory
+	 - `memory_ms`: load image resnet feature to memory
 	 - `memory_frms`: load image fast-rcnn feature to memory
 	 - `val`: running validation
 	 - `val_nqs`: number of validation questions, `-1` for all questions
@@ -225,23 +225,23 @@ th train.lua -phase 2 -nGPU 4 -memory_ms -load_checkpoint_path model/save/vqa_mo
 
 
 ### Evaluation 
-Evaluate the pre-trained model on VQA dataset
+Evaluate the pre-trained model on VQA dataset:
 ``` 
 cd ~/dual-mfa-vqa
 th eval.lua -model_path model/vqa_model_dual-mfa_6601.t7 -output_model_name vqa_model_dual-mfa_6601 -batch_size 10
 ```
-Then you can submit the result jsons and obtain the evaluation scores
+Then you can submit the result jsons and obtain the evaluation scores:
 - Open-Ended for real images: [Submission](https://competitions.codalab.org/competitions/6961#participate-submit_results)
 - Multiple-Choice for real images: [Submission](https://competitions.codalab.org/competitions/6971#participate-submit_results)
 
 ### COCO-QA Dataset
 
-- Download dataset
+- Download the dataset
 ```
 cd data_coco
 python cocoqa_preprocess.py --download 1
 ```
-- Preprocess dataset
+- Preprocess the dataset
 ```
 python prepro_cocoqa.py
 ```
@@ -252,12 +252,18 @@ cd prepro
 th prepro_res_coco.lua -batch_size 8
 ```
 
-- Training and testing the network
+- Training the network
 ``` 
-th train.lua -vqa_type coco-qa -learning_rate 4e-4 -nGPU 4 -batch_size 100 -cg_every 2 \
+th train.lua -vqa_type coco-qa -learning_rate 4e-4 -nGPU 4 -batch_size 300 \
 -model_id 1 -model_label dual-mfa
 ```
-
+- Evaluation based on WUPS
+``` bash
+cd ~/dual-mfa-vqa/metric
+python gen_wups_input.py
+python calculate_wups.py gt_ans_save.txt pd_ans_save.txt 0.9 
+python calculate_wups.py gt_ans_save.txt pd_ans_save.txt 0.0 
+```
 
 ### Visualization
 - Generate attention map
@@ -265,13 +271,13 @@ th train.lua -vqa_type coco-qa -learning_rate 4e-4 -nGPU 4 -batch_size 100 -cg_e
 cd ~/dual-mfa-vqa
 th eval_vis_att.lua -model_path model/vqa_model_dual-mfa_6601.t7 -output_model_name vqa_model_dual-mfa_6601 -batch_size 8
 ```
-- visualize attention map
+- Visualize attention map
 ``` 
 cd vis_att 
 python vis_prepro.py
 ```
-- run the matlab file `vis_attention_demo.m` to show the results of attention maps
-- run the matlab file `vis_attention.m` to save the results of attention maps
+- Run the matlab file `vis_attention_demo.m` to show the results of attention maps
+- Run the matlab file `vis_attention.m` to save the results of attention maps
 
 ![ | center ](https://github.com/lupantech/dual-mfa-vqa/blob/master/attention_map.png?raw=true)
 
@@ -287,5 +293,3 @@ inproceedings{lu2018co-attending,
 	year={2018}
 }
 ```
-
-
