@@ -268,12 +268,12 @@ python calculate_wups.py gt_ans_save.txt pd_ans_save.txt 0.0
 ```
 
 ### Visualization
-- Generate attention map
+- Generate the attention maps
 ``` 
 cd ~/dual-mfa-vqa
 th eval_vis_att.lua -model_path model/vqa_model_dual-mfa_6601.t7 -output_model_name vqa_model_dual-mfa_6601 -batch_size 8
 ```
-- Visualize attention map
+- Visualize the attention maps
 ``` 
 cd vis_att 
 python vis_prepro.py
