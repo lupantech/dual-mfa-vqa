@@ -3,7 +3,10 @@
 *.h5
 *.txt
 *.log
+*.out
+
 .gitignore
+
 */coco_qa/
 */zip/
 model/
