@@ -1,7 +1,9 @@
 *.t7
 *.json
 *.h5
-
+*.txt
+*.log
+.gitignore
 */coco_qa/
 */zip/
 model/
