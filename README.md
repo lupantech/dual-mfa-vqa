@@ -1,7 +1,5 @@
 ## Dual-MFA-VQA
 
-@(1.VQA)
-
 
 
 Co-attending Regions and Detections with Multi-modal Multiplicative Embedding for VQA. 
