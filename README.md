@@ -1,5 +1,8 @@
 ## Dual-MFA-VQA
 
+@(1.VQA)
+
+
 
 Co-attending Regions and Detections with Multi-modal Multiplicative Embedding for VQA. 
 
@@ -183,7 +186,7 @@ python extract_box_feat_train.py
 ``` 
 python extract_box_feat_train.py
 ```
-- Bounding box coordinates for test dataset
+- Bounding box coordinates for test dataset. You can directly download the result file `faster-rcnn_box4_19_test.h5` from [here](https://drive.google.com/open?id=1nhxbRcUyH2xoEQRajNbKLm0bxCuOzOCx).
 ``` 
 python extract_box_test.py
 ```
@@ -191,7 +194,7 @@ python extract_box_test.py
 
 ### Training
 Now, everything is ready, let's train the vqa network. Here are some common training ways for different needs.
-- training the network on train dataset and validating on val dataset
+- Training the network on train dataset and validating on val dataset
 ```
 th train.lua -phase 1 -val_nqs -1 -nGPU 4
 ```
@@ -268,18 +271,18 @@ python calculate_wups.py gt_ans_save.txt pd_ans_save.txt 0.0
 ```
 
 ### Visualization
-- Generate the attention maps
+- Generate the attention maps. You can directly download the result file of attention map from [here](https://drive.google.com/open?id=1PvXId4VOPrvw_y98Q-iPHjlxxg8IKWdf).
 ``` 
 cd ~/dual-mfa-vqa
 th eval_vis_att.lua -model_path model/vqa_model_dual-mfa_6601.t7 -output_model_name vqa_model_dual-mfa_6601 -batch_size 8
 ```
-- Visualize the attention maps
+- Preprocess the question data before visualization:
 ``` 
 cd vis_att 
 python vis_prepro.py
 ```
-- Run the matlab file `vis_attention_demo.m` to show the results of attention maps
-- Run the matlab file `vis_attention.m` to save the results of attention maps
+- Run the matlab file `vis_attention_demo.m` to show the results of attention maps.
+- Run the matlab file `vis_attention.m` to save the results of attention maps.
 
 ![ | center ](https://github.com/lupantech/dual-mfa-vqa/blob/master/attention_map.png?raw=true)
 
