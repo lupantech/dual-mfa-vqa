@@ -132,7 +132,3 @@ for i= que_id1:que_id1+que_num-1
     
 end
 
-
-
-
-
