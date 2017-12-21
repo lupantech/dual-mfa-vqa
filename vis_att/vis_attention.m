@@ -3,8 +3,8 @@
 TEST_NUM = 20; % Number of test 
 QUES_ID_START = 200; % Start of testing question id
 
-% image_path = '../../VQA/Images/mscoco/test-dev2015/';  % Image file
-image_path = '/Users/dbxiaolu/Pictures/test-dev2015/'    % Image file
+image_path = '../../VQA/Images/mscoco/test-dev2015/';  % Image file
+% image_path = '/Users/dbxiaolu/Pictures/test-dev2015/'    % Image file
 att_h5 = '../result/vqa_test-dev2015_vqa_model_6601_test_#207_atts.h5'; % Attention map file
 box_h5 = '../../VQA/Features/faster-rcnn_box4_19_test-dev.h5'; % Bounding box file
 ques_json = 'test-dev_prepro_questions.json'; % Question file
@@ -72,7 +72,7 @@ for i= que_id1:que_id1+que_num-1
     w = size(ori_img,2)
 
     figure; % new firgure window
-    set(gcf, 'position', [0 0 900 500]); %[left bottom width height]窗口大小:900x900
+    set(gcf, 'position', [0 0 900 500]); %[left bottom width height]麓掳驴脷麓贸脨隆:900x900
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Visualize attention map for branch 1
@@ -132,8 +132,3 @@ for i= que_id1:que_id1+que_num-1
     close;
 
 end
-
-
-
-
-
