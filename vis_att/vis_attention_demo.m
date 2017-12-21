@@ -72,7 +72,7 @@ for i= que_id1:que_id1+que_num-1
     w = size(ori_img,2)
 
     figure; % new firgure window
-    set(gcf, 'position', [0 0 900 500]); %[left bottom width height] :900x500
+    set(gcf, 'position', [0 0 900 500]); %[left bottom width height]: 900x500
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Visualize attention map for branch 1
