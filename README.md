@@ -159,7 +159,7 @@ You can download the pretrained Skipthoughts models to folder `skipthoughts_mode
 - [lookup_2k.t7 (142M)](https://drive.google.com/uc?export=download&confirm=liRP&id=0B-75nmZV6j-JRmhIMnctVXpGMEU)
 
 #### Download pretrained VQA models
-This current code can get **66.01** on Open-Ended and 70.04 on Multiple-Choice on test-tev split for the VQA 1.0 dataset. Download the pre-trained model `vqa_dual-mfa_model_6601.t7` (315M) from [here](https://drive.google.com/open?id=1OdMhh6lmqWgUuZ1hBxR1ymFbtCL12ihC) into folder `vqa/model/save/`.
+This current code can get **66.01** on Open-Ended and 70.04 on Multiple-Choice on test-tev split for the VQA 1.0 dataset. Download the pre-trained model `vqa_dual-mfa_model_6601.t7` (315M) from [here](https://drive.google.com/open?id=1OdMhh6lmqWgUuZ1hBxR1ymFbtCL12ihC) into folder `dual-mfa-vqa/model/save/`.
 
 
 ### Extracting Image Features
