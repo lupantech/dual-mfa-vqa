@@ -200,7 +200,7 @@ th train.lua -phase 1 -val_nqs -1 -nGPU 4
 ```
 th train.lua -phase 2 -nGPU 4 -batchsize 300
 ```
-- Training the network loading image features from memory (much faster, 200-300G memory is needed)
+- Training the network loading image features into memory (much faster, 200-300G memory is needed)
 ```
 th train.lua -phase 1 -val_nqs 10000 -nGPU 4 -memory_ms -memory_frms
 ```
