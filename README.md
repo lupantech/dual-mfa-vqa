@@ -196,7 +196,7 @@ Now, everything is ready, let's train the vqa network. Here are some common trai
 ```
 th train.lua -phase 1 -val_nqs -1 -nGPU 4
 ```
-- Training the network on train-val dataset
+- Training the network on train-val dataset with multi-GPUs (4 GPUs)
 ```
 th train.lua -phase 2 -nGPU 4 -batchsize 300
 ```
