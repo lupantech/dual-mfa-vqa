@@ -7,7 +7,14 @@ Co-attending Regions and Detections with Multi-modal Multiplicative Embedding fo
 The network has two attention branches with the proposed multiplicative feature embedding scheme: one branch attends free-form image regions, another branch attends detection boxes for encoding question-related visual features.
 
 This current code can get **66.09** on Open-Ended and 69.97 on Multiple-Choice on test-standard split for the VQA 1.0 dataset.
+
+**Spotlights**
 - **Paper on arXiv**: https://arxiv.org/abs/1711.06794
+- **Bounding box-based attention** with Faster R-CNN pre-trained model
+- **Co-attention** with whole image and object detection
+- **Multi-modal multiplicative embedding** feature method
+- **Torch implementation with multi-GPU acceleration**
+
 
 ![ | center](https://github.com/lupantech/dual-mfa-vqa/blob/master/model.png?raw=true)
 
