@@ -81,7 +81,7 @@ git fetch caffe
 git merge -X theirs caffe/master
 # then quit with ctrl-X
 ```
-- And update `Makefile.config` for two lines
+- And update `Makefile.config` with two lines
 ``` 
 # vim Makefile.config
 INCLUDE_DIRS := $(PYTHON_INCLUDE) /usr/local/include /usr/include/hdf5/serial 
@@ -124,7 +124,7 @@ from fast_rcnn.config import cfg
 .................
 ```
 
-- then add one line `demo.py/vis_detections()` as following 
+- Then add one line `demo.py/vis_detections()` as following 
 ``` 
 def vis_detections(im, class_name, dets, thresh=0.5):
     .................
