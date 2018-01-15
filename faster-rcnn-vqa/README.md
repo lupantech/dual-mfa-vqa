@@ -124,7 +124,7 @@ from fast_rcnn.config import cfg
 .................
 ```
 
-- then add one lin  `demo.py/vis_detections()` as following 
+- then add one line `demo.py/vis_detections()` as following 
 ``` 
 def vis_detections(im, class_name, dets, thresh=0.5):
     .................
