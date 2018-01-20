@@ -23,6 +23,8 @@ cmd:option('-input_ques_h5','data_train-val_test-dev_2k/vqa_data_prepro.h5','pat
 cmd:option('-input_json','data_train-val_test-dev_2k/vqa_data_prepro.json','path to the json file containing additional info and vocab')
 cmd:option('-fr_ms_h5', '../VQA/Features/faster-rcnn_features_19_test.h5', 'path to mscoco image faster-rcnn h5 file')
 cmd:option('-model_path', 'model/mrn2k.t7', 'path to a model checkpoint to initialize model weights from. Empty = don\'t')
+cmd:option('-input_skip','skipthoughts_model/','path to skipthoughts_params')
+cmd:option('-vqa_type', 'vqa', 'vqa or coco-qa')
 cmd:option('-out_path', 'result/', 'path to save output json file')
 cmd:option('-out_prob', false, 'save prediction probability matrix as `model_name.t7`')
 cmd:option('-type', 'test-dev2015', 'evaluation set')
