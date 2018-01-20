@@ -24,7 +24,6 @@ cmd:option('-input_json','data_train-val_test-dev_2k/vqa_data_prepro.json','path
 cmd:option('-fr_ms_h5', '../VQA/Features/faster-rcnn_features_19_test.h5', 'path to mscoco image faster-rcnn h5 file')
 cmd:option('-model_path', 'model/mrn2k.t7', 'path to a model checkpoint to initialize model weights from. Empty = don\'t')
 cmd:option('-input_skip','skipthoughts_model/','path to skipthoughts_params')
-cmd:option('-vqa_type', 'vqa', 'vqa or coco-qa')
 cmd:option('-out_path', 'result/', 'path to save output json file')
 cmd:option('-out_prob', false, 'save prediction probability matrix as `model_name.t7`')
 cmd:option('-type', 'test-dev2015', 'evaluation set')
@@ -123,44 +122,22 @@ collectgarbage();
 ------------------------------------------------------------------------
 print('Building the model...')
 
-----------------------------------
--- GRU Model
-----------------------------------
--- question embedding model: GRU
-if opt.vqa_type == 'vqa' then
-   -- skip-thought vectors
-   -- lookup = nn.LookupTableMaskZero(vocabulary_size_q, embedding_size_q)
-   if opt.num_output == 1000 then lookupfile = 'lookup_fix.t7'
-   elseif opt.num_output == 2000 then lookupfile = 'lookup_2k.t7' 
-   elseif opt.num_output == 3000 then lookupfile = 'lookup_3k.t7' 
-   end
-   lookup = torch.load(paths.concat(opt.input_skip, lookupfile))
-   assert(lookup.weight:size(1) == vocabulary_size_q+1)  -- +1 for zero
-   assert(lookup.weight:size(2) == embedding_size_q)
-   gru = torch.load(paths.concat(opt.input_skip, 'gru.t7'))
-   -- Bayesian GRUs have right dropouts
-   rnn_model = nn.GRU(embedding_size_q, rnn_size_q, false, .25, true)
-   skip_params = gru:parameters()
-   rnn_model:migrate(skip_params)
+-- skip-thought vectors
+lookup = nn.LookupTableMaskZero(vocabulary_size_q, embedding_size_q)
 
-elseif opt.vqa_type == 'coco-qa' then
-   lookup = nn.LookupTableMaskZero(vocabulary_size_q, embedding_size_q)
-   rnn_model = nn.GRU(embedding_size_q, rnn_size_q, false, .25, true)
-end
-
-rnn_model:trimZero(1)
+-- Bayesian GRUs have right dropouts
+gru = nn.GRU(embedding_size_q, rnn_size_q, false, .25, true)
+gru:trimZero(1)
+--encoder: RNN body
+encoder_net_q = nn.Sequential()
+            :add(nn.Sequencer(gru))
+            :add(nn.SelectTable(-1))
 gru = nil
 
--- encoder: RNN body
-encoder_net_q = nn.Sequential()
-            :add(nn.Sequencer(rnn_model))
-            :add(nn.SelectTable(question_max_length))
-
--- embedding: word-embedding
+--embedding: word-embedding
 embedding_net_q = nn.Sequential()
             :add(lookup)
             :add(nn.SplitTable(2))
-
 collectgarbage()
 
 ----------------------------------
@@ -248,7 +225,7 @@ function forward(s,e)
    --grab a batch--
    local fv_sorted_q,fv_im,fr_im,qids,batch_size = dataset:next_batch_test(s,e);
    model:cuda()
-   local scores = model:forward({fv_sorted_q, fv_im, fr_im,})
+   local scores = model:forward({fv_sorted_q, fv_im, fr_im})
    return scores:double(), qids;
 end
 
