@@ -119,22 +119,46 @@ collectgarbage();
 ------------------------------------------------------------------------
 -- [4] Design Parameters and Network Definitions
 ------------------------------------------------------------------------
-lookup = nn.LookupTableMaskZero(vocabulary_size_q, embedding_size_q)
+print('Building the model...')
 
-if opt.rnn_model == 'GRU' then
+----------------------------------
+-- GRU Model
+----------------------------------
+-- question embedding model: GRU
+if opt.vqa_type == 'vqa' then
+   -- skip-thought vectors
+   -- lookup = nn.LookupTableMaskZero(vocabulary_size_q, embedding_size_q)
+   if opt.num_output == 1000 then lookupfile = 'lookup_fix.t7'
+   elseif opt.num_output == 2000 then lookupfile = 'lookup_2k.t7' 
+   elseif opt.num_output == 3000 then lookupfile = 'lookup_3k.t7' 
+   end
+   lookup = torch.load(paths.concat(opt.input_skip, lookupfile))
+   assert(lookup.weight:size(1) == vocabulary_size_q+1)  -- +1 for zero
+   assert(lookup.weight:size(2) == embedding_size_q)
+   gru = torch.load(paths.concat(opt.input_skip, 'gru.t7'))
    -- Bayesian GRUs have right dropouts
-   bgru = nn.GRU(embedding_size_q, rnn_size_q, false, .25, true)
-   bgru:trimZero(1)
-   -- encoder: RNN body
-   encoder_net_q = nn.Sequential()
-               :add(nn.Sequencer(bgru))
-               :add(nn.SelectTable(-1))
+   rnn_model = nn.GRU(embedding_size_q, rnn_size_q, false, .25, true)
+   skip_params = gru:parameters()
+   rnn_model:migrate(skip_params)
+
+elseif opt.vqa_type == 'coco-qa' then
+   lookup = nn.LookupTableMaskZero(vocabulary_size_q, embedding_size_q)
+   rnn_model = nn.GRU(embedding_size_q, rnn_size_q, false, .25, true)
 end
 
+rnn_model:trimZero(1)
+gru = nil
+
+-- encoder: RNN body
+encoder_net_q = nn.Sequential()
+            :add(nn.Sequencer(rnn_model))
+            :add(nn.SelectTable(question_max_length))
+
 -- embedding: word-embedding
-embedding_net_q=nn.Sequential()
+embedding_net_q = nn.Sequential()
             :add(lookup)
             :add(nn.SplitTable(2))
+
 collectgarbage()
 
 ----------------------------------
@@ -144,13 +168,11 @@ collectgarbage()
 print('load MFA1 model:', opt.MFA_model_name)
 require('netdef.MFA')
 mfa_net1 = netdef[opt.MFA_model_name](rnn_size_q,nhimage,common_embedding_size,glimpse) -- 1200x2 --> 2000
-mfa_net1:getParameters():uniform(-0.08, 0.08) 
 
 -- MFA2
 print('load MFA2 model:', opt.MFA2_model_name)
 require('netdef.MFA')
 mfa_net2 = netdef[opt.MFA2_model_name](rnn_size_q,4097,common_embedding_size,glimpse) -- 1200x2 --> 2000
-mfa_net2:getParameters():uniform(-0.08, 0.08) 
 
 -- FUS
 require('netdef.FUS')
@@ -179,7 +201,7 @@ end
 
 model:evaluate() -- setting to evaluation
 
-w,dw = model:getParameters();
+w, dw = model:getParameters();
 print('nParams=', w:size())
 
 model_param = torch.load(model_path); -- loading the model
