@@ -293,6 +293,8 @@ python vis_prepro.py
 
 ### Reference
 - **Paper on arXiv**: https://arxiv.org/abs/1711.06794
+- **Paper on AAAI**: https://www.aaai.org/ocs/index.php/AAAI/AAAI18/paper/view/16249/16315
+
 
 If you use this code as part of any published research, please acknowledge the following paper.
 ```
