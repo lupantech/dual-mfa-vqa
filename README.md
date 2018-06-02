@@ -298,10 +298,10 @@ python vis_prepro.py
 
 If you use this code as part of any published research, please acknowledge the following paper.
 ```
-inproceedings{lu2018co-attending,
+@inproceedings{lu2018co-attending,
 	title={Co-attending Free-form Regions and Detections with Multi-modal Multiplicative Feature Embedding for Visual Question Answering.},
 	author={Lu, Pan and Li, Hongsheng and Zhang, Wei and Wang, Jianyong and Wang, Xiaogang},
-	booktitle={AAAI'18},
+	booktitle={AAAI 2018},
 	pages={7218-7225},
 	year={2018}
 }
